@@ -28,20 +28,21 @@ namespace GalPavyks.Controllers
         {
             return View();
         }
-        private readonly PersonRepository _personRepository;
-        public HomeController(PersonRepository personRepository)
-        {
-            _personRepository = personRepository;
-        }
+
         public IActionResult TableTestas()
         {
             //Init klase Person, duoti pasirinktis paramentus, padaryt 3 kartus, susideti i lista.
-            PersonListViewModel PersonListViewModel = new PersonListViewModel();
-            PersonListViewModel.Persons = _personRepository.AllPersons;
+            var personListViewModel = new PersonListViewModel
+            {
+                Persons = new List<Person>
+                {
+                    new Person{Id=1, Vardas="Ona",Pavarde="Onaite",Metai=56},
+                    new Person{Id=2, Vardas="Jonas",Pavarde="Jonaitis",Metai=32},
+                    new Person{Id=3, Vardas="Petras",Pavarde="Petraitis",Metai=14}
+                }
+            };
 
-
-
-            return View(PersonListViewModel); 
+            return View(personListViewModel); 
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
