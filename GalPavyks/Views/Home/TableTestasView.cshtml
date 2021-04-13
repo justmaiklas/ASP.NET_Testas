@@ -1,0 +1,42 @@
+﻿@model PersonListViewModel
+    <html>
+    <head>
+        <style>
+
+            .Header {
+                color: #000;
+                font-weight: 700;
+                border-bottom: 2px solid black;
+            }
+
+            .Contents {
+                font-weight: normal;
+            }
+
+            .Header, .Contents {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <h1>Tables</h1>
+
+    <table style="width: 100%">
+        <tr class="Header">
+            <th>Id</th>
+            <th>Vardas</th>
+            <th>Pavardė</th>
+        </tr>
+        @foreach (var person in Model.Persons)
+        {
+            <tr class="Contents">
+                <th>@person.Id</th>
+                <th>@person.Vardas</th>
+                <th>@person.Pavarde</th>
+            </tr>
+        }
+
+
+    </table>
+
+
+</html>

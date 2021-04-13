@@ -29,20 +29,21 @@ namespace GalPavyks.Controllers
             return View();
         }
 
-        public IActionResult TableTestas()
+        public IActionResult TableTestasView()
         {
             //Init klase Person, duoti pasirinktis paramentus, padaryt 3 kartus, susideti i lista.
+            var _personRepository = new PersonRepository();
             var personListViewModel = new PersonListViewModel
             {
-                Persons = new List<Person>
-                {
-                    new Person{Id=1, Vardas="Ona",Pavarde="Onaite",Metai=56},
-                    new Person{Id=2, Vardas="Jonas",Pavarde="Jonaitis",Metai=32},
-                    new Person{Id=3, Vardas="Petras",Pavarde="Petraitis",Metai=14}
-                }
+                Persons = _personRepository.AllPersons
             };
 
             return View(personListViewModel); 
+        }
+
+        public IActionResult AddPersonView()
+        {
+            return View();
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
