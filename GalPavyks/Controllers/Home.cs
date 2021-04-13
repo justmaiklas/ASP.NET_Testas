@@ -34,7 +34,7 @@ namespace GalPavyks.Controllers
             
             //Init klase Person, duoti pasirinktis paramentus, padaryt 3 kartus, susideti i lista.
             var persons = new Persons();
-            persons.AddTest();
+            
             var personListViewModel = new PersonListViewModel
             {
                 Persons = persons.AllPersons
@@ -46,17 +46,21 @@ namespace GalPavyks.Controllers
         public IActionResult AddPersonView()
         {
             var persons = new Persons();
-            persons.AddTest();
+           
             System.Diagnostics.Debug.WriteLine("AddPersonView");
             return View();
         }
         [HttpPost]
         public IActionResult AddPersonView(Person person)
         {
-            System.Diagnostics.Debug.WriteLine("Submit clicked");
-            var persons = new Persons();
-            persons.AddTest();
-            return View();
+            System.Diagnostics.Debug.WriteLine("Submit clicked "+ String.IsNullOrEmpty(person.Vardas));
+            
+                var persons = new Persons();
+                persons.AddPerson(person);
+                return View();
+            
+            
+            
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

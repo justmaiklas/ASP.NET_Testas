@@ -17,7 +17,7 @@ namespace GalPavyks.Models
     }
     public class Persons
     {
-        List<Person> PersonsList = new List<Person>();
+       static List<Person> PersonsList = new List<Person>();
 
         public void AddTest()
         {
@@ -27,7 +27,8 @@ namespace GalPavyks.Models
             person.Id = 1;
             person.Metai = 27;
             PersonsList.Add(person);
-           
+            PersonsList.Append(person);
+
         }
         public void AddPerson(Person ToAddPerson)
         {
