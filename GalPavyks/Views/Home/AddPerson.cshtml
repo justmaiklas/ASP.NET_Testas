@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewData["Title"] = "AddPerson";
+
+}
+@model Person
+
+
+<h1>Pridėti žmogų</h1>
+<form name="AddPerson" asp-action="AddPerson" onsubmit="return ValidateForm()">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Id" class="control-label"></label>
+        <input asp-for="Id" class="form-control" />
+        <span asp-validation-for="Id" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Vardas" class="control-label"></label>
+        <input asp-for="Vardas" class="form-control" />
+        <span asp-validation-for="Vardas" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Pavarde" class="control-label"></label>
+        <input asp-for="Pavarde" class="form-control" />
+        <span asp-validation-for="Pavarde" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Gimimo_metai" class="control-label"></label>
+        <input asp-for="Gimimo_metai" class="form-control" />
+        <span asp-validation-for="Gimimo_metai" class="text-danger"></span>
+    </div>
+    <input type="submit" value="Submit">
+</form>
+

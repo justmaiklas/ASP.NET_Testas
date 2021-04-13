@@ -1,17 +1,52 @@
-//Konstruktoriaus reikes
+﻿//Konstruktoriaus reikes
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.AccessControl;
 
 namespace GalPavyks.Models
 {
+    [AttributeUsage(AttributeTargets.Property)]
+    public class IsAdultAttribute : ValidationAttribute
+    {
+        public IsAdultAttribute()
+        {
+        }
+
+        public override bool IsValid(object value)
+        {
+            var dt = (DateTime)value;
+            if (dt.Date <= DateTime.Now.AddYears(-18).Date)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
+
+
+ 
     public class Person
     {
+    
         public int Id { get; set; }
+        [Display(Name = "Vardas")]
+        [StringLength(60, MinimumLength = 3)]
+        [Required]
         public string Vardas { get; set; }
+        [Display(Name = "Pavardė")]
+        [StringLength(60, MinimumLength = 3)]
+        [Required]
         public string Pavarde { get; set; }
-        public int Metai { get; set; }
+        [Display(Name = "Gimimo metai")]
+        [IsAdult(ErrorMessage = "Person is not adult yet"),DataType(DataType.Date)]
+        
+        [Required]
+        public DateTime Gimimo_metai { get; set; }
+
 
 
     }
@@ -25,7 +60,7 @@ namespace GalPavyks.Models
             person.Vardas = "Jonas";
             person.Pavarde = "Jonaitis";
             person.Id = 1;
-            person.Metai = 27;
+          
             PersonsList.Add(person);
             PersonsList.Append(person);
 
@@ -37,7 +72,7 @@ namespace GalPavyks.Models
             person.Vardas = ToAddPerson.Vardas;
             person.Pavarde = ToAddPerson.Pavarde;
             person.Id = ToAddPerson.Id;
-            person.Metai = ToAddPerson.Metai;
+            person.Gimimo_metai = ToAddPerson.Gimimo_metai;
             PersonsList.Add(ToAddPerson);
         }
 

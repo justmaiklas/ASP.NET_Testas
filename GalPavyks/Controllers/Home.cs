@@ -43,7 +43,7 @@ namespace GalPavyks.Controllers
             return View(personListViewModel); 
         }
 
-        public IActionResult AddPersonView()
+        public IActionResult AddPerson()
         {
             var persons = new Persons();
            
@@ -51,7 +51,7 @@ namespace GalPavyks.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult AddPersonView(Person person)
+        public IActionResult AddPerson(Person person)
         {
             System.Diagnostics.Debug.WriteLine("Submit clicked "+ String.IsNullOrEmpty(person.Vardas));
             

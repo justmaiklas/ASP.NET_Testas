@@ -269,5 +269,5 @@ C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\obj\Debug\net5.0\Ga
 C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\obj\Debug\net5.0\ref\GalPavyks.dll
 C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\obj\Debug\net5.0\GalPavyks.pdb
 C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\obj\Debug\net5.0\GalPavyks.genruntimeconfig.cache
-C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\obj\Debug\net5.0\Razor\Views\Home\AddPersonView.cshtml.g.cs
 C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\obj\Debug\net5.0\Razor\Views\Home\TableTestasView.cshtml.g.cs
+C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\obj\Debug\net5.0\Razor\Views\Home\AddPerson.cshtml.g.cs
