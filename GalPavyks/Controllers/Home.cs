@@ -31,11 +31,13 @@ namespace GalPavyks.Controllers
 
         public IActionResult TableTestasView()
         {
+            
             //Init klase Person, duoti pasirinktis paramentus, padaryt 3 kartus, susideti i lista.
-            var _personRepository = new PersonRepository();
+            var persons = new Persons();
+            persons.AddTest();
             var personListViewModel = new PersonListViewModel
             {
-                Persons = _personRepository.AllPersons
+                Persons = persons.AllPersons
             };
 
             return View(personListViewModel); 
@@ -43,8 +45,20 @@ namespace GalPavyks.Controllers
 
         public IActionResult AddPersonView()
         {
+            var persons = new Persons();
+            persons.AddTest();
+            System.Diagnostics.Debug.WriteLine("AddPersonView");
             return View();
         }
+        [HttpPost]
+        public IActionResult AddPersonView(Person person)
+        {
+            System.Diagnostics.Debug.WriteLine("Submit clicked");
+            var persons = new Persons();
+            persons.AddTest();
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

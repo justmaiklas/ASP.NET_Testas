@@ -1,6 +1,8 @@
 //Konstruktoriaus reikes
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GalPavyks.Models
 {
@@ -13,15 +15,32 @@ namespace GalPavyks.Models
 
 
     }
-    public class PersonRepository
+    public class Persons
     {
-        public IEnumerable<Person> AllPersons =>
-        new List<Person>
-            {
-            new Person{Id=1, Vardas="Ona",Pavarde="Onaite",Metai=56},
-            new Person{Id=2, Vardas="Jonas",Pavarde="Jonaitis",Metai=32},
-            new Person{Id=3, Vardas="Petras",Pavarde="Petraitis",Metai=14}
-        };
+        List<Person> PersonsList = new List<Person>();
+
+        public void AddTest()
+        {
+            Person person = new Person();
+            person.Vardas = "Jonas";
+            person.Pavarde = "Jonaitis";
+            person.Id = 1;
+            person.Metai = 27;
+            PersonsList.Add(person);
+           
+        }
+        public void AddPerson(Person ToAddPerson)
+        {
+            System.Diagnostics.Debug.WriteLine("AddPerson(): "+ToAddPerson.Vardas);
+            Person person = new Person();
+            person.Vardas = ToAddPerson.Vardas;
+            person.Pavarde = ToAddPerson.Pavarde;
+            person.Id = ToAddPerson.Id;
+            person.Metai = ToAddPerson.Metai;
+            PersonsList.Add(ToAddPerson);
+        }
+
+        public IEnumerable<Person> AllPersons => PersonsList;
     }
     public class PersonListViewModel
     {

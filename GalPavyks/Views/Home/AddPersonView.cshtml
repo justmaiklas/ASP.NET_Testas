@@ -2,6 +2,17 @@
 @{
     ViewData["Title"] = "AddPerson";
 }
-
-<h1>AddPerson</h1>
+@model Person
+<h1>Pridėti žmogų</h1>
+<form asp-action="AddPersonView">
+    <label for="Id">Id:</label>
+    <input type="text" id="Id" name="Id"><br><br>
+    <label for="Vardas">Vardas:</label>
+    <input type="text" id="Vardas" name="Vardas"><br><br>
+    <label for="Pavarde">Pavarde:</label>
+    <input type="text" id="Pavarde" name="Pavarde"><br><br>
+    <label for="Metai">Metai:</label>
+    <input type="text" id="Metai" name="Metai"><br><br>
+    <input type="submit" value="Submit">
+</form>
 
