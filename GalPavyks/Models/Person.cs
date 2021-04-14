@@ -63,18 +63,16 @@ namespace GalPavyks.Models
         public bool IsPersonUnique(Person personToAdd)
         {
             var persons = new Persons();
-            if (persons.AllPersons.All(person => person.Vardas != personToAdd.Vardas) && persons.AllPersons.All(person => person.Pavarde != personToAdd.Pavarde))
+            if (persons.AllPersons.All(person => person.Vardas != personToAdd.Vardas) || persons.AllPersons.All(person => person.Pavarde != personToAdd.Pavarde))
             {
-                persons.AddPerson(personToAdd);
-                return true;
-            }
-            else
+                persons.AddPerson(personToAdd);  return true;
+            } else
             {
                
                 Console.WriteLine("Person Already exists");
                 return false;
             }
-
+           
         }
     }
 
