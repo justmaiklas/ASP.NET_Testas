@@ -12,7 +12,9 @@ namespace GalPavyks.Models
     [AttributeUsage(AttributeTargets.Property)]
     public class IsAdultAttribute : ValidationAttribute
     {
-
+        public IsAdultAttribute()
+        {
+        }
 
         public override bool IsValid(object value)
         {
@@ -24,26 +26,17 @@ namespace GalPavyks.Models
             return false;
         }
     }
-    [AttributeUsage(AttributeTargets.Property)]
-    public class IsDuplicateAttribute : ValidationAttribute
-    {
 
-        public override bool IsValid(object value)
-        {
-            System.Diagnostics.Debug.WriteLine((int)value + " IsValid");
-            return true;
-        }
-    }
+
+
 
 
 
     public class Person
     {
-
-        
         [Display(Name = "Id")]
-        [IsDuplicate(ErrorMessage = "Person with this Id already exists")]
-        //[Range(1, int.MaxValue,ErrorMessage = "Only positive number allowed")]
+      
+        [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed")] //Range veikia
         [Required]
         public int Id { get; set; }
         [Display(Name = "Vardas")]
@@ -55,17 +48,39 @@ namespace GalPavyks.Models
         [Required]
         public string Pavarde { get; set; }
         [Display(Name = "Gimimo metai")]
-        [IsAdult(ErrorMessage = "Person is not adult yet"),DataType(DataType.Date)]
+        [IsAdult(ErrorMessage = "Person is not adult yet"), DataType(DataType.Date)]
+
         [Required]
         public DateTime Gimimo_metai { get; set; }
+        
 
 
 
     }
 
+    public class ValidatePerson
+    {
+        public bool IsPersonUnique(Person personToAdd)
+        {
+            var persons = new Persons();
+            if (persons.AllPersons.All(person => person.Vardas != personToAdd.Vardas) && persons.AllPersons.All(person => person.Pavarde != personToAdd.Pavarde))
+            {
+                persons.AddPerson(personToAdd);
+                return true;
+            }
+            else
+            {
+               
+                Console.WriteLine("Person Already exists");
+                return false;
+            }
+
+        }
+    }
+
     public class Persons
     {
-       static List<Person> PersonsList = new List<Person>();
+        static List<Person> PersonsList = new List<Person>();
 
         public void AddTest()
         {
@@ -73,23 +88,25 @@ namespace GalPavyks.Models
             person.Vardas = "Jonas";
             person.Pavarde = "Jonaitis";
             person.Id = 1;
-          
+
             PersonsList.Add(person);
             PersonsList.Append(person);
 
         }
         public void AddPerson(Person ToAddPerson)
         {
-            if (PersonsList.Exists(person => person.Id == ToAddPerson.Id))
+            
 
-            System.Diagnostics.Debug.WriteLine("AddPerson(): "+ToAddPerson.Vardas);
-           /* Person person = new Person();
-            person.Vardas = ToAddPerson.Vardas;
-            person.Pavarde = ToAddPerson.Pavarde;
-            person.Id = ToAddPerson.Id;
-            person.Gimimo_metai = ToAddPerson.Gimimo_metai;*/
+            System.Diagnostics.Debug.WriteLine("AddPerson(): " + ToAddPerson.Vardas);
+            /* Person person = new Person();
+             person.Vardas = ToAddPerson.Vardas;
+             person.Pavarde = ToAddPerson.Pavarde;
+             person.Id = ToAddPerson.Id;
+             person.Gimimo_metai = ToAddPerson.Gimimo_metai;*/
+
             PersonsList.Add(ToAddPerson);
         }
+
 
         public void DeletePerson(int id)
         {
@@ -104,7 +121,7 @@ namespace GalPavyks.Models
     }
     public class PersonListViewModel
     {
-        public IEnumerable<Person> Persons{ get; set; }
+        public IEnumerable<Person> Persons { get; set; }
     }
 }
 

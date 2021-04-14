@@ -21,7 +21,10 @@ namespace GalPavyks.Controllers
 
         public IActionResult Index()
         {
+            var persons = new Persons();
+            persons.AddTest();
             return View();
+
         }
 
         public IActionResult Privacy()
@@ -54,13 +57,17 @@ namespace GalPavyks.Controllers
         public IActionResult AddPerson(Person person)
         {
             System.Diagnostics.Debug.WriteLine("Submit clicked "+ String.IsNullOrEmpty(person.Vardas));
-            
-                var persons = new Persons();
-                persons.AddPerson(person);
-                return View();
-            
-            
-            
+           
+                var persons = new ValidatePerson();
+                if (!persons.IsPersonUnique(person))
+                {
+                    ModelState.AddModelError("Pavarde", "Person Already Exists.");
+                }
+                   
+            return View();
+
+
+
         }
         public IActionResult DeletePerson(int id)
         {
