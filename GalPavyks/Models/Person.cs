@@ -88,7 +88,7 @@ namespace GalPavyks.Models
             person.Id = 1;
 
             PersonsList.Add(person);
-            PersonsList.Append(person);
+            
 
         }
         public void AddPerson(Person ToAddPerson)
