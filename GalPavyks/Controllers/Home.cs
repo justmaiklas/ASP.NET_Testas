@@ -62,6 +62,21 @@ namespace GalPavyks.Controllers
             
             
         }
+        public IActionResult DeletePerson(int id)
+        {
+            System.Diagnostics.Debug.WriteLine("Delete clicked " + id);
+            var persons = new Persons();
+            persons.DeletePerson(id);
+            var personListViewModel = new PersonListViewModel
+            {
+                Persons = persons.AllPersons
+            };
+            return View("TableTestasView",personListViewModel);
+
+
+
+        }
+        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

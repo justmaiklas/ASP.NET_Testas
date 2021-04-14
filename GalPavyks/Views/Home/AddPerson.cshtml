@@ -5,6 +5,11 @@
 }
 @model Person
 
+@section scripts{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script>
+}
 
 <h1>Pridėti žmogų</h1>
 <form name="AddPerson" asp-action="AddPerson" onsubmit="return ValidateForm()">

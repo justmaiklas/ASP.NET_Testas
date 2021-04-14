@@ -12,9 +12,7 @@ namespace GalPavyks.Models
     [AttributeUsage(AttributeTargets.Property)]
     public class IsAdultAttribute : ValidationAttribute
     {
-        public IsAdultAttribute()
-        {
-        }
+
 
         public override bool IsValid(object value)
         {
@@ -26,12 +24,27 @@ namespace GalPavyks.Models
             return false;
         }
     }
+    [AttributeUsage(AttributeTargets.Property)]
+    public class IsDuplicateAttribute : ValidationAttribute
+    {
+
+        public override bool IsValid(object value)
+        {
+            System.Diagnostics.Debug.WriteLine((int)value + " IsValid");
+            return true;
+        }
+    }
 
 
- 
+
     public class Person
     {
-    
+
+        
+        [Display(Name = "Id")]
+        [IsDuplicate(ErrorMessage = "Person with this Id already exists")]
+        //[Range(1, int.MaxValue,ErrorMessage = "Only positive number allowed")]
+        [Required]
         public int Id { get; set; }
         [Display(Name = "Vardas")]
         [StringLength(60, MinimumLength = 3)]
@@ -43,13 +56,13 @@ namespace GalPavyks.Models
         public string Pavarde { get; set; }
         [Display(Name = "Gimimo metai")]
         [IsAdult(ErrorMessage = "Person is not adult yet"),DataType(DataType.Date)]
-        
         [Required]
         public DateTime Gimimo_metai { get; set; }
 
 
 
     }
+
     public class Persons
     {
        static List<Person> PersonsList = new List<Person>();
@@ -67,13 +80,24 @@ namespace GalPavyks.Models
         }
         public void AddPerson(Person ToAddPerson)
         {
+            if (PersonsList.Exists(person => person.Id == ToAddPerson.Id))
+
             System.Diagnostics.Debug.WriteLine("AddPerson(): "+ToAddPerson.Vardas);
-            Person person = new Person();
+           /* Person person = new Person();
             person.Vardas = ToAddPerson.Vardas;
             person.Pavarde = ToAddPerson.Pavarde;
             person.Id = ToAddPerson.Id;
-            person.Gimimo_metai = ToAddPerson.Gimimo_metai;
+            person.Gimimo_metai = ToAddPerson.Gimimo_metai;*/
             PersonsList.Add(ToAddPerson);
+        }
+
+        public void DeletePerson(int id)
+        {
+            var personToRemove = PersonsList.SingleOrDefault(person => person.Id == id);
+            if (personToRemove != null)
+            {
+                PersonsList.Remove(personToRemove);
+            }
         }
 
         public IEnumerable<Person> AllPersons => PersonsList;

@@ -28,11 +28,12 @@
         </tr>
         @foreach (var person in Model.Persons)
         {
-            <tr class="Contents">
-                <th>@person.Id</th>
-                <th>@person.Vardas</th>
-                <th>@person.Pavarde</th>
-            </tr>
+    <tr class="Contents">
+        <th>@person.Id</th>
+        <th>@person.Vardas</th>
+        <th>@person.Pavarde</th>
+        <th><a asp-action="DeletePerson" asp-route-id="@person.Id">Delete</a></th>
+    </tr>
         }
 
 
