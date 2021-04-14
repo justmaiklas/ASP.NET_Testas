@@ -6,6 +6,7 @@ using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.AccessControl;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GalPavyks.Models
 {
@@ -65,7 +66,11 @@ namespace GalPavyks.Models
             var persons = new Persons();
             if (persons.AllPersons.All(person => person.Vardas != personToAdd.Vardas) || persons.AllPersons.All(person => person.Pavarde != personToAdd.Pavarde))
             {
-                persons.AddPerson(personToAdd);  return true;
+                //persons.AddPerson(personToAdd);
+               
+                    var db = new PersonsRepository();
+                    db.AddPersonToDb(personToAdd);
+                return true;
             } else
             {
                
