@@ -15,6 +15,7 @@ namespace GalPavyks.Models
     public class PersonDbContext : DbContext
     {
         private readonly IConfiguration _config;
+
         public DbSet<Person> Persons { get; set; }
         //public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         //{
@@ -24,6 +25,7 @@ namespace GalPavyks.Models
         {
             _config = config;
         }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -34,61 +36,50 @@ namespace GalPavyks.Models
     public class PersonsRepository
     {
         private readonly PersonDbContext _appDbContext;
-        
+
         public PersonsRepository(PersonDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
-     
-        public IEnumerable<Person> AllPersons
-        {
-            get
-            {
-                return _appDbContext.Persons;
-            }
-        }
+
+        public IEnumerable<Person> AllPersons => _appDbContext.Persons;
 
         public bool AddPersonToDb(Person data)
 
         {
-            if (_appDbContext.Persons.All(p => p.Vardas != data.Vardas) || _appDbContext.Persons.All(p => p.Pavarde != data.Pavarde))
+            if (_appDbContext.Persons.Any(p => p.Vardas == data.Vardas && p.Pavarde == data.Pavarde))
             {
-                bool success = true;
-                Console.WriteLine("Kreipiamasi i ITP17334 Person-DB duomenu baze");
-                _appDbContext.Persons.Add(data);
-                try
-                {
-                    _appDbContext.SaveChanges();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.GetType()); // what is the real exception?
-                    success = false;
-                }
+                return false;
+            }
 
-                return success;
-            } else {
-
+            Console.WriteLine("Kreipiamasi i ITP17334 Person-DB duomenu baze");
+            _appDbContext.Persons.Add(data);
+            try
+            {
+                _appDbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.GetType()); // what is the real exception?
                 return false;
             }
         }
 
         public bool DeletePersonFromDb(int id)
         {
-            bool success = true;
-            Console.WriteLine("Deleting Person from DB which Id is:"+id);
+            Console.WriteLine("Deleting Person from DB which Id is:" + id);
             _appDbContext.Remove((_appDbContext.Persons.Single(p => p.Id == id)));
             try
             {
                 _appDbContext.SaveChanges();
+                return true;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.GetType()); // what is the real exception?
-                success = false;
-
+                return false;
             }
-            return success;
         }
     }
 }

@@ -54,10 +54,6 @@ namespace GalPavyks.Models
 
         [Required]
         public DateTime Gimimo_metai { get; set; }
-        
-
-
-
     }
 
     public class PersonActions
