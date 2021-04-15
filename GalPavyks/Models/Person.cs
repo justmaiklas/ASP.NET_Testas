@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.AccessControl;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.Extensions.Configuration;
 
 namespace GalPavyks.Models
 {
@@ -37,8 +38,8 @@ namespace GalPavyks.Models
     {
         [Display(Name = "Id")]
       
-        [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed")] //Range veikia
-        [Required]
+       // [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed")] //Range veikia
+       // [Required]
         public int Id { get; set; }
         [Display(Name = "Vardas")]
         [StringLength(60, MinimumLength = 3)]
@@ -59,69 +60,85 @@ namespace GalPavyks.Models
 
     }
 
-    public class ValidatePerson
+    public class PersonActions
     {
-        public bool IsPersonUnique(Person personToAdd)
+        private readonly PersonDbContext _dbctx;
+        private PersonsRepository db;
+        public PersonActions(PersonDbContext personDbContext)
         {
-            var persons = new Persons();
-            if (persons.AllPersons.All(person => person.Vardas != personToAdd.Vardas) || persons.AllPersons.All(person => person.Pavarde != personToAdd.Pavarde))
-            {
-                //persons.AddPerson(personToAdd);
+            _dbctx = personDbContext;
+            db = new PersonsRepository(_dbctx);
+        }   
+
+        public bool AddPerson(Person personToAdd)
+        {
+
+            //if (persons.AllPersons.All(person => person.Vardas != personToAdd.Vardas) || persons.AllPersons.All(person => person.Pavarde != personToAdd.Pavarde))
+            //{
+            //    //persons.AddPerson(personToAdd);
+
+
+
+                return db.AddPersonToDb(personToAdd);
+                
+            //} else
+            //{
                
-                    var db = new PersonsRepository();
-                    db.AddPersonToDb(personToAdd);
-                return true;
-            } else
-            {
-               
-                Console.WriteLine("Person Already exists");
-                return false;
-            }
+            //    Console.WriteLine("Person Already exists");
+            //    return false;
+            //}
            
         }
+
+        public bool DeletePerson(int Id)
+        {
+           return db.DeletePersonFromDb(Id);
+
+
+        }
     }
 
-    public class Persons
-    {
-        static List<Person> PersonsList = new List<Person>();
+    //public class Persons
+    //{
+    //    static List<Person> PersonsList = new List<Person>();
 
-        public void AddTest()
-        {
-            Person person = new Person();
-            person.Vardas = "Jonas";
-            person.Pavarde = "Jonaitis";
-            person.Id = 1;
+    //    public void AddTest()
+    //    {
+    //        Person person = new Person();
+    //        person.Vardas = "Jonas";
+    //        person.Pavarde = "Jonaitis";
+    //        person.Id = 1;
 
-            PersonsList.Add(person);
+    //        PersonsList.Add(person);
             
 
-        }
-        public void AddPerson(Person ToAddPerson)
-        {
+    //    }
+        //public void AddPerson(Person ToAddPerson)
+        //{
             
 
-            System.Diagnostics.Debug.WriteLine("AddPerson(): " + ToAddPerson.Vardas);
-            /* Person person = new Person();
-             person.Vardas = ToAddPerson.Vardas;
-             person.Pavarde = ToAddPerson.Pavarde;
-             person.Id = ToAddPerson.Id;
-             person.Gimimo_metai = ToAddPerson.Gimimo_metai;*/
+        //    System.Diagnostics.Debug.WriteLine("AddPerson(): " + ToAddPerson.Vardas);
+        //    /* Person person = new Person();
+        //     person.Vardas = ToAddPerson.Vardas;
+        //     person.Pavarde = ToAddPerson.Pavarde;
+        //     person.Id = ToAddPerson.Id;
+        //     person.Gimimo_metai = ToAddPerson.Gimimo_metai;*/
 
-            PersonsList.Add(ToAddPerson);
-        }
+        //    PersonsList.Add(ToAddPerson);
+        //}
 
 
-        public void DeletePerson(int id)
-        {
-            var personToRemove = PersonsList.SingleOrDefault(person => person.Id == id);
-            if (personToRemove != null)
-            {
-                PersonsList.Remove(personToRemove);
-            }
-        }
+        //public void DeletePerson(int id)
+        //{
+        //    var personToRemove = PersonsList.SingleOrDefault(person => person.Id == id);
+        //    if (personToRemove != null)
+        //    {
+        //        PersonsList.Remove(personToRemove);
+        //    }
+        //}
 
-        public IEnumerable<Person> AllPersons => PersonsList;
-    }
+    //    public IEnumerable<Person> AllPersons => PersonsList;
+    //}
     public class PersonListViewModel
     {
         public IEnumerable<Person> Persons { get; set; }

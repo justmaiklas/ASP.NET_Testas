@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GalPavyks.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class V2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

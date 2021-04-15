@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 
 namespace GalPavyks.Controllers
@@ -13,16 +14,18 @@ namespace GalPavyks.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly PersonDbContext _personDbContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, PersonDbContext ctx)
         {
             _logger = logger;
+            _personDbContext = ctx;
         }
 
         public IActionResult Index()
         {
-            var persons = new Persons();
-            persons.AddTest();
+            //var persons = new Persons();
+            //persons.AddTest();
             return View();
 
         }
@@ -36,20 +39,18 @@ namespace GalPavyks.Controllers
         {
             
             //Init klase Person, duoti pasirinktis paramentus, padaryt 3 kartus, susideti i lista.
-            var persons = new Persons();
+           
             
             var personListViewModel = new PersonListViewModel
             {
-                Persons = persons.AllPersons
+                Persons = _personDbContext.Persons.ToList()
+
             };
 
             return View(personListViewModel); 
         }
 
-        public IActionResult AddPerson()
-        {
-            var persons = new Persons();
-           
+        public IActionResult AddPerson() {
             System.Diagnostics.Debug.WriteLine("AddPersonView");
             return View();
         }
@@ -58,25 +59,27 @@ namespace GalPavyks.Controllers
         {
             System.Diagnostics.Debug.WriteLine("Submit clicked "+ String.IsNullOrEmpty(person.Vardas));
            
-                var persons = new ValidatePerson();
-                if (!persons.IsPersonUnique(person))
+                var persons = new PersonActions(_personDbContext);
+                if (ModelState.IsValid)
                 {
-                    ModelState.AddModelError("Pavarde", "Person Already Exists.");
+                    if (!persons.AddPerson(person))
+                    {
+                        ModelState.AddModelError("Pavarde", "Person Already Exists.");
+                    }
+
                 }
-                   
+
             return View();
-
-
 
         }
         public IActionResult DeletePerson(int id)
         {
             System.Diagnostics.Debug.WriteLine("Delete clicked " + id);
-            var persons = new Persons();
+            var persons = new PersonActions(_personDbContext);
             persons.DeletePerson(id);
             var personListViewModel = new PersonListViewModel
             {
-                Persons = persons.AllPersons
+                Persons = _personDbContext.Persons.ToList()
             };
             return View("TableTestasView",personListViewModel);
 
