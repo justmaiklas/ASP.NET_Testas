@@ -35,32 +35,40 @@ namespace GalPavyks.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IMyLogger Log;
         private readonly PersonDbContext _personDbContext;
 
-        public HomeController(ILogger<HomeController> logger, PersonDbContext ctx)
+        public HomeController(ILogger<HomeController> logger, PersonDbContext ctx, IMyLogger _log)
         {
             _logger = logger;
             _personDbContext = ctx;
+            Log = _log;
+
         }
 
         public IActionResult Index()
         {
+            Log.ToFile("The Index page has been accessed");
             return View();
         }
 
         public IActionResult Privacy()
         {
+            Log.ToFile("The Privacy page has been accessed");
+
             return View();
         }
 
-        public IActionResult TableTestasView()
+        public IActionResult PersonsList()
         {
-            var personListViewModel = new PersonListViewModel
+            Log.ToFile("The PersonsList page has been accessed");
+            var personsList = new PersonListViewModel
             {
                 Persons = _personDbContext.Persons.ToList()
             };
+            Log.ToFile("Persons count: "+ personsList.Persons.Count());
 
-            return View(personListViewModel); 
+            return View(personsList); 
         }
 
         public IActionResult AddPerson() {
@@ -70,14 +78,15 @@ namespace GalPavyks.Controllers
         [HttpPost]
         public IActionResult AddPerson(Person person)
         {
-            System.Diagnostics.Debug.WriteLine("Submit clicked "+ String.IsNullOrEmpty(person.Vardas));
+            Log.ToFile("Submit clicked (Add Person)");
            
-                var persons = new PersonActions(_personDbContext);
+                var personsAction = new PersonsRepository(_personDbContext,Log);
                 if (ModelState.IsValid)
                 {
-                    if (!persons.AddPerson(person))
+                    if (!personsAction.AddPersonToDb(person))
                     {
-                        ModelState.AddModelError("Pavarde", "Person Already Exists.");
+                    Log.ToFile("Error adding new person (Person Already Exists.)");
+                    ModelState.AddModelError("Pavarde", "Person Already Exists.");
                     }
 
                 }
@@ -87,14 +96,15 @@ namespace GalPavyks.Controllers
         }
         public IActionResult DeletePerson(int id)
         {
+            Log.ToFile("Delete clicked. Deleting Person with id: " + id);
             System.Diagnostics.Debug.WriteLine("Delete clicked " + id);
-            var persons = new PersonActions(_personDbContext);
-            persons.DeletePerson(id);
+            var personsAction = new PersonsRepository(_personDbContext, Log);
+            personsAction.DeletePersonFromDb(id);
             var personListViewModel = new PersonListViewModel
             {
                 Persons = _personDbContext.Persons.ToList()
             };
-            return View("TableTestasView",personListViewModel);
+            return View("PersonsList",personListViewModel);
 
 
 
