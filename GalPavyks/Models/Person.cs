@@ -2,12 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Security.AccessControl;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.Extensions.Configuration;
+
 
 namespace GalPavyks.Models
 {
@@ -43,7 +39,8 @@ namespace GalPavyks.Models
         [IsAdult(ErrorMessage = "Person is not adult yet"), DataType(DataType.Date)]
 
         [Required]
-        public DateTime Gimimo_metai { get; set; }
+        public DateTime GimimoMetai { get; set; }
+        //public Entity AdditionalInfo { get; set; }
     }
     public class PersonListViewModel
     {

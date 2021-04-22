@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-
+using GalPavyks.Repository;
 
 namespace GalPavyks.Controllers
 {
@@ -25,7 +25,7 @@ namespace GalPavyks.Controllers
     //2) prisideti loginima i faila, txt ilogger panaudojimas, log4net ir pan.
     
     //tutorialo apie TDD, test driven development
-    //3) pasirasyti 1-2 laisvos formos automatinius testus, naudojant ms tests, nUnit, xUnit.
+    //3) pasirasyti 1-2 laisvos formos automatinius testus, naudojant ms tests, nUnit, xUnit. xUnit (Labiausiai naudoja)
 
     //4) prisideti bazine klase Entity, turincia CreatedOn, UpdatedOn datetime tipo laukus,
     //4.1) pasidaryti update person, kuris leistu patikslinti asmens gimimo data, i duombaze saugoti tik gimiimo data su laiku (00:00:00:000z)
@@ -34,16 +34,17 @@ namespace GalPavyks.Controllers
 
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+       
         private readonly IMyLogger Log;
-        private readonly PersonDbContext _personDbContext;
+        //private readonly AppDbContext _appDbContext;
+        private readonly IRepositoryWrapper _repositoryWrapper;
 
-        public HomeController(ILogger<HomeController> logger, PersonDbContext ctx, IMyLogger _log)
+        public HomeController(IRepositoryWrapper repositoryWrapper, IMyLogger _log)
         {
-            _logger = logger;
-            _personDbContext = ctx;
+            //_appDbContext = ctx;
             Log = _log;
-
+            _repositoryWrapper = repositoryWrapper;
+            // _personsRepository = personsRepository;
         }
 
         public IActionResult Index()
@@ -64,7 +65,7 @@ namespace GalPavyks.Controllers
             Log.ToFile("The PersonsList page has been accessed");
             var personsList = new PersonListViewModel
             {
-                Persons = _personDbContext.Persons.ToList()
+                Persons = _repositoryWrapper.Person.FindAll().ToList()
             };
             Log.ToFile("Persons count: "+ personsList.Persons.Count());
 
@@ -80,14 +81,27 @@ namespace GalPavyks.Controllers
         {
             Log.ToFile("Submit clicked (Add Person)");
            
-                var personsAction = new PersonsRepository(_personDbContext,Log);
+                
                 if (ModelState.IsValid)
                 {
-                    if (!personsAction.AddPersonToDb(person))
+                    var vardas= _repositoryWrapper.Person.GetByCondition(x => x.Vardas.Equals(person.Vardas));
+                    
+                if (vardas.Any(p => p.Pavarde.Equals(person.Pavarde)))
                     {
                     Log.ToFile("Error adding new person (Person Already Exists.)");
                     ModelState.AddModelError("Pavarde", "Person Already Exists.");
-                    }
+                }
+                else
+                {
+                    
+                    _repositoryWrapper.Person.Create(person);
+                    _repositoryWrapper.Save();
+                }
+                    //if (!personsAction.AddPersonToDb(person))
+                    //{
+                    //Log.ToFile("Error adding new person (Person Already Exists.)");
+                    //ModelState.AddModelError("Pavarde", "Person Already Exists.");
+                    //}
 
                 }
 
@@ -96,13 +110,14 @@ namespace GalPavyks.Controllers
         }
         public IActionResult DeletePerson(int id)
         {
-            Log.ToFile("Delete clicked. Deleting Person with id: " + id);
-            System.Diagnostics.Debug.WriteLine("Delete clicked " + id);
-            var personsAction = new PersonsRepository(_personDbContext, Log);
-            personsAction.DeletePersonFromDb(id);
+            Log.ToFile("Delete clicked. Deleting Person with id: " +id);
+            var person = _repositoryWrapper.Person.GetByCondition(x => x.Id.Equals(id)).Single();
+            _repositoryWrapper.Person.Delete(person);
+            _repositoryWrapper.Save();
+
             var personListViewModel = new PersonListViewModel
             {
-                Persons = _personDbContext.Persons.ToList()
+                Persons = _repositoryWrapper.Person.FindAll()
             };
             return View("PersonsList",personListViewModel);
 

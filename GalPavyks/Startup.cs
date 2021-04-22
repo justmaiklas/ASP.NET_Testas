@@ -4,10 +4,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
 using System.IO;
 using GalPavyks.Models;
-
-
+using GalPavyks.Repository;
 
 
 namespace GalPavyks
@@ -25,9 +25,12 @@ namespace GalPavyks
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<PersonDbContext>();
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
             services.AddScoped<IMyLogger, MyLogger>();
-            services.AddScoped<IPersonsRepository, PersonsRepository>();
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            
+            
 
         }
 

@@ -5,48 +5,45 @@ using Microsoft.Extensions.Logging;
 namespace GalPavyks.Models
 {
     
-    public interface IMyLogger
-    {
-       
-        void ToFile(string message);
-    }
+
     public class MyLogger : IMyLogger
     {
-        private bool PrintToConsole;
-        private readonly ILogger<HomeController> log;
+        private bool printToConsole;
+        private readonly ILogger<HomeController> _log;
 
-        public MyLogger(ILogger<HomeController> _iLogger)
+        public MyLogger(ILogger<HomeController> iLogger)
         {
-            PrintToConsole = false;
-            log = _iLogger;
+            printToConsole = false;
+            _log = iLogger;
             ToFile("Logging started");
         }
 
         public void ToFile(string message)
         {
             string outputMessage = FormatMessage(message);
-            log.LogInformation(outputMessage);
-            if (PrintToConsole)
-                ToConsole(outputMessage);
+            _log.LogInformation(outputMessage);
+            if (printToConsole)
+                ToConsole(message);
         }
 
-        private string FormatMessage(string message)
+        private static string FormatMessage(string message)
         {
             return GetDate() + "=> " + message;
         }
 
-        private DateTime GetDate()
+        private static DateTime GetDate()
         {
             return DateTime.Now;
         }
         public void ToConsole(string message)
         {
-            Console.WriteLine(message);
+            string outputMessage = FormatMessage(message);
+            Console.WriteLine(outputMessage);
         }
 
         public void SetPrintToConsole(bool enabled)
         {
-            PrintToConsole = enabled;
+            printToConsole = enabled;
         }
     }
 }
