@@ -27,7 +27,7 @@ namespace GalPavyks
             services.AddControllersWithViews();
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
-            services.AddScoped<IMyLogger, MyLogger>();
+            services.AddSingleton<IMyLogger, MyLogger>();
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             
             

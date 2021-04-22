@@ -36,8 +36,8 @@ namespace GalPavyks.Models
         [Required]
         public string Pavarde { get; set; }
         [Display(Name = "Gimimo metai")]
-        [IsAdult(ErrorMessage = "Person is not adult yet"), DataType(DataType.Date)]
-
+        [IsAdult(ErrorMessage = "Person is not adult yet")]
+        [DataType(DataType.Date)]
         [Required]
         public DateTime GimimoMetai { get; set; }
         //public Entity AdditionalInfo { get; set; }

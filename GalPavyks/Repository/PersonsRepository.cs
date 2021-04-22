@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using GalPavyks.Models;
@@ -12,34 +11,44 @@ namespace GalPavyks.Repository
     public abstract class PersonsRepository<T> : IPersonsRepository<T> where T : class
     {
         private readonly AppDbContext _appDbContext;
-        private readonly IMyLogger _log;
-        //public IEnumerable<Person> AllPersons => _appDbContext.Persons;
-        public PersonsRepository(AppDbContext appDbContext)
+        private IMyLogger _logger;
+
+        public PersonsRepository(AppDbContext appDbContext, IMyLogger myLogger)
         {
             _appDbContext = appDbContext;
-         //   _log = log;
+            _logger = myLogger;
+
         }
 
         public IQueryable<T> FindAll()
         {
+            _logger.ToConsole("Fetching Persons List");
             return _appDbContext.Set<T>().AsNoTracking();
         }
         public IQueryable<T> GetByCondition(Expression<Func<T,bool>> expression)
         {
+            _logger.ToConsole("Fetching Persons by condition: " + expression.ToString());
+
             return _appDbContext.Set<T>().Where(expression).AsNoTracking();
         }
 
         public void Create(T entity)
         {
+            _logger.ToConsole("Creating New Entity ");
+
             _appDbContext.Set<T>().Add(entity);
         }
         public void Update(T entity)
         {
+            _logger.ToConsole("Updating Entity");
+
             _appDbContext.Set<T>().Update(entity);
         }
 
         public void Delete(T entity)
         {
+            _logger.ToConsole("Deleting Entity");
+
             _appDbContext.Set<T>().Remove(entity);
         }
         // public void DeletePersonById(int id)

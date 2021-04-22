@@ -1,7 +1,5 @@
-﻿@{
-    ViewData["Title"] = "Persons List";
-}
-@model PersonListViewModel
+﻿@model Person
+
 <html>
 <head>
     <style>
@@ -28,17 +26,21 @@
         <th>Id</th>
         <th>Vardas</th>
         <th>Pavardė</th>
+        <th>Gimimo metai</th>
+
     </tr>
-    @foreach (var person in Model.Persons)
-    {
+   
+    
         <tr class="Contents">
-            <th>@person.Id</th>
-            <th>@person.Vardas</th>
-            <th>@person.Pavarde</th>
-            <th><a asp-action="DeletePerson" asp-route-id="@person.Id">Delete</a></th>
-            <th><a asp-action="PersonDetails" asp-route-id="@person.Id">View Details</a></th>
+            <th>@Model.Id</th>
+            <th>@Model.Vardas</th>
+            <th>@Model.Pavarde</th>
+            <th>@Model.GimimoMetai.ToShortDateString()</th>
+            <th><a asp-action="DeletePerson" asp-route-id="@Model.Id">Delete</a></th>
+            <!--<th><a asp-action="UpdatePerson" asp-route-id="@Model.Id">Update Birthday</a></th>-->
+            
         </tr>
-    }
+    
 
 
 </table>

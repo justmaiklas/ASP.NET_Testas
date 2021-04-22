@@ -1,6 +1,5 @@
 ﻿using System;
-using GalPavyks.Controllers;
-using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace GalPavyks.Models
 {
@@ -8,21 +7,21 @@ namespace GalPavyks.Models
 
     public class MyLogger : IMyLogger
     {
-        private bool printToConsole;
-        private readonly ILogger<HomeController> _log;
-
-        public MyLogger(ILogger<HomeController> iLogger)
+        private bool _printToConsole;
+        
+        public MyLogger()
         {
-            printToConsole = false;
-            _log = iLogger;
-            ToFile("Logging started");
+            _printToConsole = false;
+          // ToFile("Logging started");
         }
 
         public void ToFile(string message)
         {
+            StreamWriter w = File.AppendText("mylog.txt");
             string outputMessage = FormatMessage(message);
-            _log.LogInformation(outputMessage);
-            if (printToConsole)
+            w.WriteLine(outputMessage);
+            w.Close();
+            if (_printToConsole)
                 ToConsole(message);
         }
 
@@ -43,7 +42,7 @@ namespace GalPavyks.Models
 
         public void SetPrintToConsole(bool enabled)
         {
-            printToConsole = enabled;
+            _printToConsole = enabled;
         }
     }
 }

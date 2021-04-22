@@ -1,12 +1,7 @@
 ﻿using GalPavyks.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using GalPavyks.Repository;
 
 namespace GalPavyks.Controllers
@@ -35,51 +30,55 @@ namespace GalPavyks.Controllers
     public class HomeController : Controller
     {
        
-        private readonly IMyLogger Log;
-        //private readonly AppDbContext _appDbContext;
+        private readonly IMyLogger _log;
         private readonly IRepositoryWrapper _repositoryWrapper;
 
-        public HomeController(IRepositoryWrapper repositoryWrapper, IMyLogger _log)
+        public HomeController(IRepositoryWrapper repositoryWrapper, IMyLogger log)
         {
-            //_appDbContext = ctx;
-            Log = _log;
+
+            _log = log;
             _repositoryWrapper = repositoryWrapper;
-            // _personsRepository = personsRepository;
+
         }
 
         public IActionResult Index()
         {
-            Log.ToFile("The Index page has been accessed");
+            _log.ToFile("The Index page has been accessed");
             return View();
         }
 
         public IActionResult Privacy()
         {
-            Log.ToFile("The Privacy page has been accessed");
+            _log.ToFile("The Privacy page has been accessed");
 
             return View();
         }
 
         public IActionResult PersonsList()
         {
-            Log.ToFile("The PersonsList page has been accessed");
+            _log.ToFile("The PersonsList page has been accessed");
             var personsList = new PersonListViewModel
             {
                 Persons = _repositoryWrapper.Person.FindAll().ToList()
             };
-            Log.ToFile("Persons count: "+ personsList.Persons.Count());
+            _log.ToFile("Persons count: "+ personsList.Persons.Count());
 
-            return View(personsList); 
+            return View("PersonsList",personsList); 
+        }
+
+        public IActionResult PersonDetails(int id)
+        {
+            var person = _repositoryWrapper.Person.GetByCondition(p => p.Id.Equals(id)).Single();
+            return View(person);
         }
 
         public IActionResult AddPerson() {
-            System.Diagnostics.Debug.WriteLine("AddPersonView");
             return View();
         }
         [HttpPost]
         public IActionResult AddPerson(Person person)
         {
-            Log.ToFile("Submit clicked (Add Person)");
+            _log.ToFile("Submit clicked (Add Person)");
            
                 
                 if (ModelState.IsValid)
@@ -88,7 +87,7 @@ namespace GalPavyks.Controllers
                     
                 if (vardas.Any(p => p.Pavarde.Equals(person.Pavarde)))
                     {
-                    Log.ToFile("Error adding new person (Person Already Exists.)");
+                    _log.ToFile("Error adding new person (Person Already Exists.)");
                     ModelState.AddModelError("Pavarde", "Person Already Exists.");
                 }
                 else
@@ -99,7 +98,7 @@ namespace GalPavyks.Controllers
                 }
                     //if (!personsAction.AddPersonToDb(person))
                     //{
-                    //Log.ToFile("Error adding new person (Person Already Exists.)");
+                    //_log.ToFile("Error adding new person (Person Already Exists.)");
                     //ModelState.AddModelError("Pavarde", "Person Already Exists.");
                     //}
 
@@ -110,7 +109,7 @@ namespace GalPavyks.Controllers
         }
         public IActionResult DeletePerson(int id)
         {
-            Log.ToFile("Delete clicked. Deleting Person with id: " +id);
+            _log.ToFile("Delete clicked. Deleting Person with id: " +id);
             var person = _repositoryWrapper.Person.GetByCondition(x => x.Id.Equals(id)).Single();
             _repositoryWrapper.Person.Delete(person);
             _repositoryWrapper.Save();
