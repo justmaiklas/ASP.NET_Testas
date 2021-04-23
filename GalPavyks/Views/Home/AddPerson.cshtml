@@ -10,6 +10,9 @@
 <h1>Pridėti žmogų</h1>
 <form name="AddPerson" asp-action="AddPerson">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="@ViewBag.AlertType" style="display:@ViewBag.Display">
+        <span>@ViewBag.Message</span>
+    </div>
     <!--<div class="form-group">
         <label asp-for="Id" class="control-label"></label>
         <input asp-for="Id" class="form-control" />

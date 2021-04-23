@@ -393,3 +393,12 @@ C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\bin\Debug\net5.0\zh
 C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\bin\Debug\net5.0\zh-Hant\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
 C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\bin\Debug\net5.0\zh-Hant\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
 C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\obj\Debug\net5.0\Razor\Views\Home\PersonDetails.cshtml.g.cs
+C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\bin\Debug\net5.0\System.Web.Mvc.dll
+C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\bin\Debug\net5.0\System.Web.Razor.dll
+C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\bin\Debug\net5.0\System.Web.Helpers.dll
+C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\bin\Debug\net5.0\System.Web.WebPages.Deployment.dll
+C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\bin\Debug\net5.0\System.Web.WebPages.Razor.dll
+C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\bin\Debug\net5.0\System.Web.WebPages.dll
+C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\bin\Debug\net5.0\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\bin\Debug\net5.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\bin\Debug\net5.0\Microsoft.Web.Infrastructure.dll

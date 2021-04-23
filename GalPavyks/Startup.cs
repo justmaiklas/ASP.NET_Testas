@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using System.IO;
 using GalPavyks.Models;
 using GalPavyks.Repository;
+using GalPavyks.Service;
+using GalPavyks.Service.PersonService;
 
 
 namespace GalPavyks
@@ -29,8 +31,9 @@ namespace GalPavyks
                 options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
             services.AddSingleton<IMyLogger, MyLogger>();
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
-            
-            
+            services.AddScoped<IServiceWrapper, ServiceWrapper>();
+
+
 
         }
 

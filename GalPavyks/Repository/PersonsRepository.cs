@@ -13,10 +13,11 @@ namespace GalPavyks.Repository
         private readonly AppDbContext _appDbContext;
         private IMyLogger _logger;
 
-        public PersonsRepository(AppDbContext appDbContext, IMyLogger myLogger)
+        public PersonsRepository(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
-            _logger = myLogger;
+            if (_logger == null)
+                _logger = new MyLogger();
 
         }
 
@@ -51,52 +52,5 @@ namespace GalPavyks.Repository
 
             _appDbContext.Set<T>().Remove(entity);
         }
-        // public void DeletePersonById(int id)
-        //{
-           
-        //    _appDbContext.Set<Person>().Where(p => p.Id == id);
-        //}
-        //public bool AddPersonToDb(Person data)
-
-        //{
-        //    if (_appDbContext.Persons.Any(p => p.Vardas == data.Vardas && p.Pavarde == data.Pavarde))
-        //    {
-        //        _log.ToFile("[ERROR] Person Already Exists");
-        //        return false;
-        //    }
-
-        //    _log.ToFile("Adding Person");
-        //    _appDbContext.Persons.Add(data);
-        //    try
-        //    {
-        //        _appDbContext.SaveChanges();
-        //        _log.ToFile("[SUCCESS] Person Added");
-        //        return true;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        _log.ToFile("[ERROR] " + e.Message);
-        //        Console.WriteLine(e.GetType()); // what is the real exception?
-        //        return false;
-        //    }
-        //}
-
-        //public bool DeletePersonFromDb(int id)
-        //{
-        //    _log.ToFile("Deleting Person from DB which Id is:" + id);
-        //    _appDbContext.Remove((_appDbContext.Persons.Single(p => p.Id == id)));
-        //    try
-        //    {
-        //        _appDbContext.SaveChanges();
-        //        _log.ToFile("[SUCCESS] Person Deleted");
-        //        return true;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        _log.ToFile("[ERROR] " + e.Message);
-        //        Console.WriteLine(e.GetType()); // what is the real exception?
-        //        return false;
-        //    }
-        //}
     }
 }

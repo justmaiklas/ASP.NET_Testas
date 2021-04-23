@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Linq;
 using GalPavyks.Repository;
+using GalPavyks.Service;
+using Xunit;
 
 namespace GalPavyks.Controllers
 {
@@ -31,19 +33,22 @@ namespace GalPavyks.Controllers
     {
        
         private readonly IMyLogger _log;
+        private readonly IServiceWrapper _serviceWrapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
 
-        public HomeController(IRepositoryWrapper repositoryWrapper, IMyLogger log)
+        public HomeController(IRepositoryWrapper repositoryWrapper, IMyLogger log, IServiceWrapper serviceWrapper)
         {
 
-            _log = log;
+            _serviceWrapper = serviceWrapper;
             _repositoryWrapper = repositoryWrapper;
+            _log = log; //Nera butinas, galima naudot ir  _repositoryWrapper.MyLogger, kadangi jis yra i'wrappintas ir ten;
 
         }
 
         public IActionResult Index()
         {
             _log.ToFile("The Index page has been accessed");
+           
             return View();
         }
 
@@ -67,53 +72,56 @@ namespace GalPavyks.Controllers
         }
 
         public IActionResult PersonDetails(int id)
-        {
+        {   //-----------PERKELTI I SERVISA-----------
             var person = _repositoryWrapper.Person.GetByCondition(p => p.Id.Equals(id)).Single();
+            //-----------#PERKELTI I SERVISA-----------
             return View(person);
         }
 
         public IActionResult AddPerson() {
+            _log.ToFile("The AddPerson page has been accessed");
+            ViewBag.Display = "none";
+            
             return View();
         }
         [HttpPost]
         public IActionResult AddPerson(Person person)
         {
             _log.ToFile("Submit clicked (Add Person)");
-           
-                
-                if (ModelState.IsValid)
+            if (!_serviceWrapper.PersonService.IsPersonModelValid(person))
+            {
+                ViewBag.Display = ""; //NETVARKINGAS UZRASAS. SUTVARKYTI! IESKOTI SVARESNES ALTERNATYVOS
+                ViewBag.Message = "Fill all fields!"; //NETVARKINGAS UZRASAS. SUTVARKYTI! IESKOTI SVARESNES ALTERNATYVOS
+                ViewBag.AlertType = "alert alert-info"; //NETVARKINGAS UZRASAS. SUTVARKYTI! IESKOTI SVARESNES ALTERNATYVOS
+            }
+            else
+            {
+                bool personAlreadyExists = _serviceWrapper.PersonService.CheckIfPersonExist(person, ModelState);
+                if (personAlreadyExists)
                 {
-                    var vardas= _repositoryWrapper.Person.GetByCondition(x => x.Vardas.Equals(person.Vardas));
-                    
-                if (vardas.Any(p => p.Pavarde.Equals(person.Pavarde)))
-                    {
+                    ViewBag.Display = ""; //NETVARKINGAS UZRASAS. SUTVARKYTI! IESKOTI SVARESNES ALTERNATYVOS
+                    ViewBag.Message = "Error adding new person (Person Already Exists.)!"; //NETVARKINGAS UZRASAS. SUTVARKYTI! IESKOTI SVARESNES ALTERNATYVOS
+                    ViewBag.AlertType = "alert alert-danger"; //NETVARKINGAS UZRASAS. SUTVARKYTI! IESKOTI SVARESNES ALTERNATYVOS
                     _log.ToFile("Error adding new person (Person Already Exists.)");
                     ModelState.AddModelError("Pavarde", "Person Already Exists.");
                 }
                 else
                 {
-                    
-                    _repositoryWrapper.Person.Create(person);
-                    _repositoryWrapper.Save();
+                    ViewBag.Display = ""; //NETVARKINGAS UZRASAS. SUTVARKYTI! IESKOTI SVARESNES ALTERNATYVOS
+                    ViewBag.Message = "Success!"; //NETVARKINGAS UZRASAS. SUTVARKYTI! IESKOTI SVARESNES ALTERNATYVOS
+                    ViewBag.AlertType = "alert alert-success"; //NETVARKINGAS UZRASAS. SUTVARKYTI! IESKOTI SVARESNES ALTERNATYVOS
                 }
-                    //if (!personsAction.AddPersonToDb(person))
-                    //{
-                    //_log.ToFile("Error adding new person (Person Already Exists.)");
-                    //ModelState.AddModelError("Pavarde", "Person Already Exists.");
-                    //}
-
-                }
-
+            }
             return View();
-
         }
         public IActionResult DeletePerson(int id)
         {
             _log.ToFile("Delete clicked. Deleting Person with id: " +id);
+            //-----------PERKELTI I SERVISA-----------
             var person = _repositoryWrapper.Person.GetByCondition(x => x.Id.Equals(id)).Single();
             _repositoryWrapper.Person.Delete(person);
             _repositoryWrapper.Save();
-
+            //-----------#PERKELTI I SERVISA-----------
             var personListViewModel = new PersonListViewModel
             {
                 Persons = _repositoryWrapper.Person.FindAll()

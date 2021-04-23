@@ -7,11 +7,12 @@ namespace GalPavyks.Models
 
     public class MyLogger : IMyLogger
     {
-        private bool _printToConsole;
-        
+        private bool _printToConsole = true;
+        private bool _printToFile = false;
+
         public MyLogger()
         {
-            _printToConsole = false;
+           
           // ToFile("Logging started");
         }
 

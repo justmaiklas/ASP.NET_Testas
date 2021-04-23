@@ -12,6 +12,8 @@ namespace GalPavyks.Models
     {
         public override bool IsValid(object value)
         {
+            if (value == null)
+                return false;
             var dt = (DateTime)value;
             if (dt.Date <= DateTime.Now.AddYears(-18).Date)
             {
@@ -35,14 +37,15 @@ namespace GalPavyks.Models
         [StringLength(60, MinimumLength = 3)]
         [Required]
         public string Pavarde { get; set; }
+
         [Display(Name = "Gimimo metai")]
         [IsAdult(ErrorMessage = "Person is not adult yet")]
         [DataType(DataType.Date)]
         [Required]
-        public DateTime GimimoMetai { get; set; }
+        public DateTime? GimimoMetai { get; set; } = DateTime.Now.AddYears(-18).Date;
         //public Entity AdditionalInfo { get; set; }
     }
-    public class PersonListViewModel
+    public class PersonListViewModel //GALIMA PABANDYT ATSIKRATYT SITOS KLASES, gal (tiksliai nezinau ar gera praktika)..
     {
         public IEnumerable<Person> Persons { get; set; }
     }

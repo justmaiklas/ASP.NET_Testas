@@ -8,8 +8,8 @@ namespace GalPavyks.Repository
 {
     public class PersonRepository : PersonsRepository<Person>, IPerson 
     {
-        public PersonRepository(AppDbContext appDbContext, IMyLogger myLogger)
-            : base(appDbContext,myLogger)
+        public PersonRepository(AppDbContext appDbContext)
+            : base(appDbContext)
         {
         }
     }

@@ -29,13 +29,11 @@
         <th>Gimimo metai</th>
 
     </tr>
-   
-    
         <tr class="Contents">
             <th>@Model.Id</th>
             <th>@Model.Vardas</th>
             <th>@Model.Pavarde</th>
-            <th>@Model.GimimoMetai.ToShortDateString()</th>
+            <th>@Model.GimimoMetai</th>
             <th><a asp-action="DeletePerson" asp-route-id="@Model.Id">Delete</a></th>
             <!--<th><a asp-action="UpdatePerson" asp-route-id="@Model.Id">Update Birthday</a></th>-->
             

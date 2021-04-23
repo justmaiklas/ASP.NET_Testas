@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GalPavyks.Models;
-using Microsoft.Extensions.Logging;
+﻿using GalPavyks.Models;
+
 
 namespace GalPavyks.Repository
 {
@@ -12,22 +8,20 @@ namespace GalPavyks.Repository
 
         private IPerson _person;
         private readonly AppDbContext _appDbContext;
-        private IMyLogger _myLogger;
+        private IMyLogger _myLogger; //PERKELTI I SERVISUS? ARBA IS VIS NAUDOTI KAIP INDEPENDENT LOGERI
 
         public RepositoryWrapper(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
+            if (_myLogger == null)
+                _myLogger = new MyLogger(); //PERKELTI I SERVISUS? ARBA IS VIS NAUDOTI KAIP INDEPENDENT LOGERI
+            if (_person==null)
+                _person = new PersonRepository(_appDbContext);
         }
-        public IMyLogger MyLogger
+        public IMyLogger MyLogger //PERKELTI I SERVISUS? ARBA IS VIS NAUDOTI KAIP INDEPENDENT LOGERI
         {
             get
             {
-                if (_myLogger == null)
-                {
-
-                    _myLogger = new MyLogger();
-                }
-
                 return _myLogger;
             }
         }
@@ -35,11 +29,6 @@ namespace GalPavyks.Repository
         {
             get
             {
-                if (_person == null)
-                {
-                    _person = new PersonRepository(_appDbContext,MyLogger);
-                }
-
                 return _person;
             }
         }
