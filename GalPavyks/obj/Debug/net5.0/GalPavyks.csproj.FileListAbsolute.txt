@@ -402,3 +402,5 @@ C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\bin\Debug\net5.0\Sy
 C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\bin\Debug\net5.0\Microsoft.DotNet.PlatformAbstractions.dll
 C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\bin\Debug\net5.0\Microsoft.Extensions.DependencyModel.dll
 C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\bin\Debug\net5.0\Microsoft.Web.Infrastructure.dll
+C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\obj\Debug\net5.0\Razor\Views\Home\_PersonDeleteModal.cshtml.g.cs
+C:\Users\mjaneliauskas\source\repos\ASP.NET_Testas\GalPavyks\bin\Debug\net5.0\Microsoft.VisualStudio.Web.BrowserLink.dll

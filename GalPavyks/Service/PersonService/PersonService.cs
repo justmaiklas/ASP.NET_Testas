@@ -60,6 +60,61 @@ namespace GalPavyks.Service.PersonService
             
         }
 
+        public bool IsPersonAdult(Person person, ModelStateDictionary modelState)
+        {
+            if (person.GimimoMetai >= DateTime.Now.AddYears(-18).Date)
+            {
+                modelState.AddModelError("GimimoMetai", "Person Is Not Adult Yet.");
+                return true;
+            }
+            return false;
+        }
+
+        public Person GetPersonById(int id)
+        {
+            if (id == 0 || id == null)
+            {
+                _myLogger.ToFile("[ERR] Getting person which ID is NULL or 0 (id="+id.ToString()+")");
+                return null;
+            }
+
+            Person person = null; 
+            person = _repositoryWrapper.Person.GetByCondition(p => p.Id.Equals(id)).Single();
+            if (person == null)
+            {
+                _myLogger.ToFile("[ERR] Getting person which ID is " + id.ToString() + ", Does this person exists?");
+                return null;
+            }
+
+            return person;
+        }
+
+        public bool DeletePerson(int id)
+        {
+            Person person = GetPersonById(id);
+            if (person == null)
+            {
+                return false;
+            }
+            _repositoryWrapper.Person.Delete(person);
+            _repositoryWrapper.Save();
+            return true;
+
+        }
+
+        public bool UpdatePerson(Person person)
+        {
+            Person uneditedPerson = GetPersonById(person.Id);
+            if (uneditedPerson.GimimoMetai == person.GimimoMetai)
+            {
+                _myLogger.ToFile("[ERR] Updating person which id is " + person.Id.ToString() + ", Person details is not changed");
+                return false;
+            }
+            _repositoryWrapper.Person.Update(person);
+            _repositoryWrapper.Save();
+            return true;
+        }
+
         //public void CheckIfPersonExits()
         //{
         //    if (_appDbContext.Persons.Any(p => p.Vardas == data.Vardas && p.Pavarde == data.Pavarde))

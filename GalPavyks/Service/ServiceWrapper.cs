@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GalPavyks.Models;
+using GalPavyks.Repository;
 using GalPavyks.Service.PersonService;
 using GalPavyks.Service.ViewService;
 
@@ -12,6 +13,7 @@ namespace GalPavyks.Service
     {
         private IPersonService _personService;
         private IViewService _viewService;
+        private IRepositoryWrapper _repositoryWrapper;
 
         public ServiceWrapper(AppDbContext appDbContext)
         {
@@ -20,6 +22,8 @@ namespace GalPavyks.Service
                 _personService = new PersonService.PersonService(appDbContext);
             if (_viewService == null)
                 _viewService = new ViewService.ViewService(); //Sukurti ViewService kuris grazintu modalus success arba error i Views
+            //if (_repositoryWrapper == null)
+            //    _repositoryWrapper = new RepositoryWrapper(appDbContext);
         }
         public IViewService ViewService //Sukurti ViewService kuris grazintu modalus success arba error i Views
         {
@@ -35,5 +39,13 @@ namespace GalPavyks.Service
                 return _personService;
             }
         }
+
+        //public IRepositoryWrapper RepositoryWrapper
+        //{
+        //    get
+        //    {
+        //        return _repositoryWrapper;
+        //    }
+        //}
     }
 }

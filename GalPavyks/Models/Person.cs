@@ -41,6 +41,7 @@ namespace GalPavyks.Models
         [Display(Name = "Gimimo metai")]
         [IsAdult(ErrorMessage = "Person is not adult yet")]
         [DataType(DataType.Date)]
+        
         [Required]
         public DateTime? GimimoMetai { get; set; } = DateTime.Now.AddYears(-18).Date;
         //public Entity AdditionalInfo { get; set; }

@@ -1,4 +1,5 @@
-﻿using GalPavyks.Models;
+﻿using System;
+using GalPavyks.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Linq;
@@ -70,12 +71,11 @@ namespace GalPavyks.Controllers
 
             return View("PersonsList",personsList); 
         }
-
+        
         public IActionResult PersonDetails(int id)
-        {   //-----------PERKELTI I SERVISA-----------
-            var person = _repositoryWrapper.Person.GetByCondition(p => p.Id.Equals(id)).Single();
-            //-----------#PERKELTI I SERVISA-----------
-            return View(person);
+        {   
+            _log.ToFile("Open Person Details");
+            return View(_serviceWrapper.PersonService.GetPersonById(id));
         }
 
         public IActionResult AddPerson() {
@@ -118,18 +118,29 @@ namespace GalPavyks.Controllers
         {
             _log.ToFile("Delete clicked. Deleting Person with id: " +id);
             //-----------PERKELTI I SERVISA-----------
-            var person = _repositoryWrapper.Person.GetByCondition(x => x.Id.Equals(id)).Single();
-            _repositoryWrapper.Person.Delete(person);
-            _repositoryWrapper.Save();
-            //-----------#PERKELTI I SERVISA-----------
+            if (!_serviceWrapper.PersonService.DeletePerson(id))
+            {
+                _log.ToFile("[ERR] ERROR Deleting person.");
+            }
             var personListViewModel = new PersonListViewModel
             {
                 Persons = _repositoryWrapper.Person.FindAll()
             };
+            //-----------#PERKELTI I SERVISA-----------
             return View("PersonsList",personListViewModel);
+        }
 
-
-
+        public IActionResult UpdatePerson(Person person)
+        {
+            _log.ToFile("Update Pressed");
+            if (ModelState.IsValid)
+            {
+                _serviceWrapper.PersonService.UpdatePerson(person);
+            }
+              
+           
+            return View("PersonDetails",person);
+            //return RedirectToAction("PersonDetails","Home",new{id = id});
         }
         
 

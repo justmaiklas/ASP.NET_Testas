@@ -7,5 +7,9 @@ namespace GalPavyks.Service.PersonService
     {
         bool CheckIfPersonExist(Person person, ModelStateDictionary model);
         bool IsPersonModelValid(Person person);
+        bool IsPersonAdult(Person person, ModelStateDictionary model);
+        Person GetPersonById(int id);
+        bool DeletePerson(int id);
+        bool UpdatePerson(Person person);
     }
 }

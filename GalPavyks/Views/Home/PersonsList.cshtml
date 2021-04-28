@@ -1,9 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Persons List";
 }
+@using GalPavyks.Models
+@using Microsoft.AspNetCore.Mvc.RazorPages
 @model PersonListViewModel
 <html>
 <head>
+<script type="text/javascript" src="~/js/Modal.js")></script>
     <style>
 
         .Header {
@@ -22,21 +25,32 @@
     </style>
 </head>
 <h1>Tables</h1>
-
+<div id="showmodal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @{
+                Html.RenderPartial("_PersonDeleteModal", new Person());
+            }
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <table style="width: 100%">
     <tr class="Header">
         <th>Id</th>
         <th>Vardas</th>
         <th>Pavardė</th>
     </tr>
+   
     @foreach (var person in Model.Persons)
     {
         <tr class="Contents">
             <th>@person.Id</th>
             <th>@person.Vardas</th>
             <th>@person.Pavarde</th>
-            <th><a asp-action="DeletePerson" asp-route-id="@person.Id">Delete</a></th>
-            <th><a asp-action="PersonDetails" asp-route-id="@person.Id">View Details</a></th>
+            <th>
+                <button onclick="OpenDeleteModal(@person.Id)" class="btn btn-danger">Delete</button>
+                <a asp-action="PersonDetails" asp-route-id="@person.Id" class="btn btn-info Details">View Details</a>
+            </th>
         </tr>
     }
 
